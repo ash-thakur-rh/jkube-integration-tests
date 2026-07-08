@@ -43,8 +43,8 @@ jobs:
         # wasn't able to run tests successfully on latest version of crc. See linked issue:
         # https://github.com/crc-org/crc/issues/4382
         # TODO: Update CRC version to latest when aforementioned issue gets resolved
-        okd: [ v4.14.0 ]
-        crc: [ 2.32.0 ]
+        okd: [ v4.22.1 ]
+        crc: [ 2.62.0 ]
         suite: ['quarkus','springboot','webapp','other']
     steps:
       - name: Checkout
