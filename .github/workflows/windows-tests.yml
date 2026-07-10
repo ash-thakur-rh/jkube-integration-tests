@@ -15,12 +15,6 @@
 name: JKube Windows Specific Tests
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-  schedule:
-    - cron: '0 1 * * *' # Every day at 1
   workflow_dispatch:
 
 permissions:

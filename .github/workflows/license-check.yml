@@ -15,7 +15,7 @@
 name: License Check
 
 on:
-  pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
