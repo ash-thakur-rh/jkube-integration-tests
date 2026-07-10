@@ -113,6 +113,7 @@ jobs:
         run: |
           crc config set preset okd
           crc config set network-mode user
+          crc config set bundle docker://quay.io/crcont/okd-bundle:4.22.0-okd-scos.6
       - name: Setup the crc
         run: |
           sudo -su $USER crc setup
