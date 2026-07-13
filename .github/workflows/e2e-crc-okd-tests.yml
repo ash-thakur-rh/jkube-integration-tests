@@ -33,7 +33,7 @@ jobs:
     uses: ./.github/workflows/build-jkube.yml
 
   openshift-kubernetes-distribution:
-    name: CRC ${{ matrix.crc-ref }} / OKD ${{ matrix.okd }}
+    name: CRC ${{ matrix.crc-ref }} / OKD ${{ matrix.okd }} / ${{ matrix.suite }}
     runs-on: ubuntu-latest
     needs: build-jkube
     strategy:
@@ -41,6 +41,7 @@ jobs:
       matrix:
         okd: [ v4.22.1 ]
         crc-ref: [ main ]
+        suite: ['quarkus', 'springboot', 'webapp', 'other']
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -122,11 +123,5 @@ jobs:
       - name: Determine JKube version
         id: jkube
         run: echo "version=$(./mvnw -q -f 'jkube/pom.xml' -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> "$GITHUB_OUTPUT"
-      - name: Install and Run Integration Tests (quarkus)
-        run: ./mvnw -B -POpenShift,quarkus verify -Djkube.version="${{ steps.jkube.outputs.version }}" -Djunit.jupiter.execution.parallel.config.fixed.parallelism=4
-      - name: Install and Run Integration Tests (springboot)
-        run: ./mvnw -B -POpenShift,springboot verify -Djkube.version="${{ steps.jkube.outputs.version }}" -Djunit.jupiter.execution.parallel.config.fixed.parallelism=4
-      - name: Install and Run Integration Tests (webapp)
-        run: ./mvnw -B -POpenShift,webapp verify -Djkube.version="${{ steps.jkube.outputs.version }}" -Djunit.jupiter.execution.parallel.config.fixed.parallelism=4
-      - name: Install and Run Integration Tests (other)
-        run: ./mvnw -B -POpenShift,other verify -Djkube.version="${{ steps.jkube.outputs.version }}" -Djunit.jupiter.execution.parallel.config.fixed.parallelism=4
+      - name: Install and Run Integration Tests
+        run: ./mvnw -B -POpenShift,${{ matrix.suite }} verify -Djkube.version="${{ steps.jkube.outputs.version }}" -Djunit.jupiter.execution.parallel.config.fixed.parallelism=2
