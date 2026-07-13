@@ -124,4 +124,4 @@ jobs:
         id: jkube
         run: echo "version=$(./mvnw -q -f 'jkube/pom.xml' -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> "$GITHUB_OUTPUT"
       - name: Install and Run Integration Tests
-        run: ./mvnw -B -POpenShift,${{ matrix.suite }} verify -Djkube.version="${{ steps.jkube.outputs.version }}" -Djunit.jupiter.execution.parallel.config.fixed.parallelism=2
+        run: ./mvnw -B -POpenShift,${{ matrix.suite }} verify -Djkube.version="${{ steps.jkube.outputs.version }}" -Djunit.jupiter.execution.parallel.config.fixed.parallelism=${{ matrix.suite == 'webapp' && '1' || '2' }}
